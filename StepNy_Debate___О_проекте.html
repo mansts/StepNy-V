@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StepNy Debate — О проекте</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      border-radius: 0px !important;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #FAF9F6;
+      color: #111111;
+      overflow-x: hidden;
+    }
+    h1, h2, .font-display {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .accordion-content {
+      display: none;
+    }
+    .accordion-content.open {
+      display: block;
+    }
+
+    /* Плавное появление блоков при загрузке и прокрутке */
+    .reveal-block {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-block.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Бесконечная плавная бегущая строка партнеров (влево или вправо) */
+    @keyframes marqueeLeft {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+    @keyframes marqueeRight {
+      0% {
+        transform: translate3d(-50%, 0, 0);
+      }
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+    }
+    .marquee-track.dir-left {
+      animation: marqueeLeft var(--marquee-duration, 42s) linear infinite;
+    }
+    .marquee-track.dir-right {
+      animation: marqueeRight var(--marquee-duration, 42s) linear infinite;
+    }
+    .marquee-wrapper:hover .marquee-track {
+      animation-play-state: paused;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF9F6] text-[#111111] antialiased selection:bg-[#0047AB] selection:text-[#FAF9F6] min-h-screen flex flex-col justify-between">
+
+  <!-- Шапка сайта -->
+  <header class="sticky top-0 z-40 bg-[#FAF9F6] border-b-2 border-[#111111]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
+      <!-- Логотип со ссылкой на главную страницу -->
+      <a id="header-logo-link" href="/" class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#111111] select-none shrink-0">
+        Step<span class="text-[#0047AB]">Ny</span> Debate
+      </a>
+
+      <!-- Переключатель языков и кнопка меню (три горизонтальные линии) -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <div role="group" aria-label="Language switcher" class="inline-flex border-2 border-[#111111] bg-[#FAF9F6]">
+          <button
+            type="button"
+            data-lang-btn="kz"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+          >
+            kz
+          </button>
+          <button
+            type="button"
+            data-lang-btn="ru"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+          >
+            ru
+          </button>
+          <button
+            type="button"
+            data-lang-btn="en"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors cursor-pointer"
+          >
+            en
+          </button>
+        </div>
+
+        <button
+          id="menu-open-btn"
+          type="button"
+          aria-label="Открыть меню"
+          class="p-2.5 border-2 border-[#111111] bg-[#FAF9F6] hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-95 transition-all cursor-pointer flex flex-col justify-center items-center gap-1.5 w-11 h-10"
+        >
+          <span class="block w-5 h-0.5 bg-current"></span>
+          <span class="block w-5 h-0.5 bg-current"></span>
+          <span class="block w-5 h-0.5 bg-current"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Выдвижное меню -->
+  <div id="menu-backdrop" class="fixed inset-0 z-50 bg-[#111111]/40 hidden"></div>
+  <aside
+    id="slide-menu"
+    aria-hidden="true"
+    class="fixed top-0 right-0 z-50 h-full w-full max-w-sm bg-[#FAF9F6] border-l-2 border-[#111111] transform translate-x-full transition-transform duration-200 ease-out flex flex-col justify-between overflow-y-auto"
+  >
+    <div class="p-6 sm:p-8">
+      <!-- Верхняя панель меню -->
+      <div class="flex items-center justify-between gap-2 pb-6 mb-6 border-b-2 border-[#111111]">
+        <a id="menu-logo-link" href="/" class="text-base sm:text-lg font-extrabold tracking-tight text-[#111111] truncate">
+          Step<span class="text-[#0047AB]">Ny</span> Debate
+        </a>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <div role="group" aria-label="Menu language switcher" class="inline-flex border-2 border-[#111111] bg-[#FAF9F6] shrink-0">
+            <button
+              type="button"
+              data-lang-btn="kz"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+            >
+              kz
+            </button>
+            <button
+              type="button"
+              data-lang-btn="ru"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+            >
+              ru
+            </button>
+            <button
+              type="button"
+              data-lang-btn="en"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+            >
+              en
+            </button>
+          </div>
+
+          <button
+            id="menu-close-btn"
+            type="button"
+            aria-label="Закрыть меню"
+            class="w-9 h-9 shrink-0 border-2 border-[#111111] flex items-center justify-center text-base font-bold hover:bg-[#111111] hover:text-[#FAF9F6] transition-colors cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Разделы меню генерируются автоматически из SITE_CONFIG.MENU_SECTIONS -->
+      <nav id="menu-sections-container" class="space-y-7 text-[#111111]"></nav>
+    </div>
+
+    <!-- Подвал меню -->
+    <div class="p-6 sm:p-8 text-sm font-extrabold text-[#111111]">
+      © Step<span class="text-[#0047AB]">Ny</span> Debate
+    </div>
+  </aside>
+
+  <!-- Основной контент страницы О проекте (/aboutus/) -->
+  <main class="w-full flex-grow">
+
+    <!-- Блок 1: Представление компании StepNy -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-10 sm:pb-14">
+      <div class="reveal-block max-w-3xl space-y-6">
+        <p id="company-intro-text" class="text-xl sm:text-2xl md:text-[26px] leading-relaxed font-medium text-[#111111]"></p>
+
+        <div class="border-l-4 border-[#0047AB] bg-[#EFECE4] px-5 py-4 sm:px-6 sm:py-5">
+          <p id="company-launch-text" class="text-base sm:text-lg font-extrabold tracking-tight text-[#111111]"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок 2: Наши спонсоры / партнеры (20 квадратов 1:1 с текстом снизу и бесконечным вращением) -->
+    <section aria-labelledby="partners-heading" class="py-10 sm:py-14">
+      <div class="reveal-block max-w-5xl mx-auto px-4 sm:px-6 mb-8 sm:mb-10">
+        <h2 id="partners-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-center text-[#111111]">
+          Наши спонсоры / партнеры
+        </h2>
+      </div>
+
+      <div class="reveal-block marquee-wrapper w-full overflow-hidden py-2 select-none" style="transition-delay: 90ms;">
+        <div id="partners-marquee-track" class="marquee-track dir-left"></div>
+      </div>
+    </section>
+
+    <!-- Блок 3: О проекте -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <div class="reveal-block max-w-3xl space-y-5">
+        <h2 id="about-project-heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#111111]">
+          О проекте
+        </h2>
+        <div id="about-project-paragraphs" class="space-y-5 text-base sm:text-xl leading-relaxed text-[#111111]"></div>
+      </div>
+    </section>
+
+    <!-- Блок 4: Наша миссия -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div class="reveal-block border-2 border-[#111111] bg-[#FAF9F6] p-6 sm:p-10 max-w-3xl">
+        <h2 id="mission-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111] mb-4">
+          Наша миссия
+        </h2>
+        <p id="mission-text" class="text-base sm:text-xl leading-relaxed text-[#111111]"></p>
+      </div>
+    </section>
+
+    <!-- Блок 5: Наши цели -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <div class="reveal-block max-w-3xl">
+        <h2 id="goals-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111] mb-6">
+          Наши цели
+        </h2>
+        <ul id="goals-list" class="space-y-4 text-base sm:text-lg font-medium text-[#111111]"></ul>
+      </div>
+    </section>
+
+    <!-- Блок 6: Наш подход -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div class="reveal-block max-w-3xl space-y-4">
+        <h2 id="approach-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111]">
+          Наш подход
+        </h2>
+        <p id="approach-text" class="text-base sm:text-xl leading-relaxed text-[#111111]"></p>
+      </div>
+    </section>
+
+    <!-- Блок 7: Наше будущее -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-16 sm:pb-20">
+      <div class="reveal-block max-w-3xl space-y-4">
+        <h2 id="future-heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111]">
+          Наше будущее
+        </h2>
+        <p id="future-text" class="text-base sm:text-xl leading-relaxed text-[#111111]"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Эталонный футер (#EFECE4) без разделительных линий и рамок -->
+  <footer class="w-full bg-[#EFECE4] mt-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
+        <!-- Левая колонка: бренд и навигация футера из SITE_CONFIG.FOOTER_LINKS -->
+        <div>
+          <p class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#111111] mb-6">
+            © Step<span class="text-[#0047AB]">Ny</span> Debate
+          </p>
+          <ul id="footer-links-list" class="space-y-3 text-base font-semibold"></ul>
+        </div>
+
+        <!-- Правая колонка: контакты из SITE_CONFIG.CONTACTS -->
+        <div class="space-y-2 text-base">
+          <p id="footer-contacts-title" class="font-extrabold text-[#111111] mb-2">
+            Контакты:
+          </p>
+          <div id="footer-contacts-list" class="space-y-2 font-medium"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /**
+     * ============================================================================
+     * БЫСТРАЯ КОНФИГУРАЦИЯ САЙТА (SITE_CONFIG)
+     * ----------------------------------------------------------------------------
+     * Как настроить партнеров / спонсоров:
+     * 1. PARTNERS_DIRECTION: укажите 'left' (движение влево) или 'right' (вправо).
+     * 2. PARTNERS_SPEED_SECONDS: скорость одного полного круга в секундах.
+     * 3. В массиве PARTNERS (20 элементов):
+     *    - name: текст под квадратом 1:1 (остаётся неизменным на всех 3 языках).
+     *    - image: вставьте путь/название файла логотипа (например, 'partners/logo1.png'),
+     *      и картинка автоматически появится в квадрате 1:1 и будет вращаться в ленте.
+     *      Если оставить '', отобразится минималистичный геометрический знак с номером.
+     * ============================================================================
+     */
+    const SITE_CONFIG = {
+      defaultLang: 'ru',
+      currentPath: '/aboutus',
+
+      // Направление и скорость вращения ленты партнеров ('left' или 'right')
+      PARTNERS_DIRECTION: 'left',
+      PARTNERS_SPEED_SECONDS: 42,
+
+      // 20 спонсоров / партнеров (name одинаков на всех языках; в image укажите имя файла)
+      PARTNERS: [
+        { name: 'Партнёр 01', image: '' },
+        { name: 'Партнёр 02', image: '' },
+        { name: 'Партнёр 03', image: '' },
+        { name: 'Партнёр 04', image: '' },
+        { name: 'Партнёр 05', image: '' },
+        { name: 'Партнёр 06', image: '' },
+        { name: 'Партнёр 07', image: '' },
+        { name: 'Партнёр 08', image: '' },
+        { name: 'Партнёр 09', image: '' },
+        { name: 'Партнёр 10', image: '' },
+        { name: 'Партнёр 11', image: '' },
+        { name: 'Партнёр 12', image: '' },
+        { name: 'Партнёр 13', image: '' },
+        { name: 'Партнёр 14', image: '' },
+        { name: 'Партнёр 15', image: '' },
+        { name: 'Партнёр 16', image: '' },
+        { name: 'Партнёр 17', image: '' },
+        { name: 'Партнёр 18', image: '' },
+        { name: 'Партнёр 19', image: '' },
+        { name: 'Партнёр 20', image: '' }
+      ],
+
+      // Основные маршруты сайта
+      ROUTES: {
+        home: '/',
+        aboutProject: '/aboutus',
+        tournament: '/about',
+        docs: '/docs',
+        faq: '/faq',
+        sponsors: '/sponsors'
+      },
+
+      // Контент страницы на 3 языках (KZ / RU / EN)
+      CONTENT: {
+        kz: {
+          companyIntro:
+            'Алдымен өз компаниямды таныстырайын — <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong>. Бұл оқушының қарқынды дайындығына арналған авторлық әдістемесі бар, халықаралық және басқа да емтихандарға дайындайтын білім беру ИИ-платформасы.',
+          companyLaunch:
+            'Платформа өз жұмысын 2027 жылдың наурыз айында бастайды',
+          partnersHeading: 'Біздің демеушілер / серіктестер',
+          aboutHeading: 'Жоба туралы',
+          aboutParagraphs: [
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> — оқушылар арасында дебат мәдениетін, сыни ойлауды және көпшілік алдында сөз сөйлеу дағдыларын дамытуға бағытталған білім беру бастамасы.',
+            'Жоба әртүрлі оқу орындарының оқушыларын біріктіріп, оларға идея алмасуға, өзекті мәселелерді талқылауға және дәлелді пікірталас арқылы өз ұстанымын қорғауға мүмкіндік береді.',
+            'Біз сыни тұрғыдан ойлау, ақпаратты талдау және өз ойын сауатты жеткізе білу қазіргі заманғы білім берудің маңызды бөлігі екеніне сенеміз.'
+          ],
+          missionHeading: 'Біздің миссиямыз',
+          missionText:
+            'Оқушылар зияткерлік қабілеттерін дамытып, сындарлы диалог жүргізуді үйренетін және зияткерлік жарыстарға қатысу тәжірибесін жинақтайтын кеңістік құру.',
+          goalsHeading: 'Біздің мақсаттарымыз',
+          goalsList: [
+            'Сыни және аналитикалық ойлауды дамыту.',
+            'Дәлелдеу және көпшілік алдында сөз сөйлеу дағдыларын жетілдіру.',
+            'Сындарлы пікірталас мәдениетін қалыптастыру.',
+            'Әртүрлі оқу орындарының оқушылары арасында өзара әрекеттесу мүмкіндіктерін жасау.',
+            'Жастар арасында зияткерлік жарыстарды кеңінен насихаттау.'
+          ],
+          approachHeading: 'Біздің тәсіліміз',
+          approachText:
+            'Біз дебатты тек жарыс ретінде ғана емес, білім беру процесі ретінде қарастырамыз. Мұнда сөз сөйлеудің сенімділігі мен дәлелдердің күші ғана емес, сонымен қатар қарсыласты тыңдай білу, қарама-қарсы көзқарастарды талдау және дербес қорытынды жасау маңызды.',
+          futureHeading: 'Біздің болашағымыз',
+          futureText:
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> оқушылар мен білім беру мекемелерін біріктіретін зияткерлік іс-шаралар өткізу платформасына айналуға ұмтылады. Біз жобаны біртіндеп кеңейтуді, жаңа қатысушыларды тартуды және дебат қауымдастығын дамытуға мүмкіндіктер жасауды жоспарлап отырмыз.',
+          contactsTitle: 'Байланыс:'
+        },
+        ru: {
+          companyIntro:
+            'Сначала представлю свою компанию — <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong>. Это образовательная ИИ-платформа для подготовки к международным и не только экзаменам с авторской методикой, рассчитанная на интенсив ученика.',
+          companyLaunch:
+            'Платформа начнет свою работу в Марте 2027 года',
+          partnersHeading: 'Наши спонсоры / партнеры',
+          aboutHeading: 'О проекте',
+          aboutParagraphs: [
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> — это образовательная инициатива, направленная на развитие дебатной культуры, критического мышления и навыков публичного выступления среди школьников.',
+            'Проект объединяет учащихся из разных образовательных учреждений, предоставляя им возможность обмениваться идеями, обсуждать актуальные вопросы и отстаивать собственную позицию посредством аргументированной дискуссии.',
+            'Мы верим, что умение мыслить критически, анализировать информацию и грамотно выражать свои мысли является важной частью современного образования.'
+          ],
+          missionHeading: 'Наша миссия',
+          missionText:
+            'Создать пространство, в котором школьники смогут развивать интеллектуальные способности, учиться конструктивному диалогу и приобретать опыт участия в интеллектуальных соревнованиях.',
+          goalsHeading: 'Наши цели',
+          goalsList: [
+            'Развитие критического и аналитического мышления.',
+            'Совершенствование навыков аргументации и публичных выступлений.',
+            'Формирование культуры конструктивной дискуссии.',
+            'Создание возможностей для взаимодействия школьников из разных учебных заведений.',
+            'Популяризация интеллектуальных соревнований среди молодёжи.'
+          ],
+          approachHeading: 'Наш подход',
+          approachText:
+            'Мы рассматриваем дебаты не только как соревнование, но и как образовательный процесс. Здесь важны не только убедительность выступления и сила аргументов, но и умение слушать оппонента, анализировать противоположные точки зрения и делать самостоятельные выводы.',
+          futureHeading: 'Наше будущее',
+          futureText:
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> стремится стать платформой для проведения интеллектуальных мероприятий, объединяющей школьников и образовательные учреждения. Мы планируем постепенно расширять проект, привлекать новых участников и создавать возможности для развития дебатного сообщества.',
+          contactsTitle: 'Контакты:'
+        },
+        en: {
+          companyIntro:
+            'First, let me introduce my company — <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong>. It is an educational AI platform for preparing for international and national exams with a proprietary methodology tailored to each student’s intensive pace.',
+          companyLaunch:
+            'The platform will launch in March 2027',
+          partnersHeading: 'Our Sponsors / Partners',
+          aboutHeading: 'About the Project',
+          aboutParagraphs: [
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> is an educational initiative aimed at developing debate culture, critical thinking, and public speaking skills among school students.',
+            'The project brings together students from different educational institutions, giving them the opportunity to exchange ideas, discuss pressing issues, and defend their position through reasoned discussion.',
+            'We believe that the ability to think critically, analyze information, and articulate thoughts clearly is a vital part of modern education.'
+          ],
+          missionHeading: 'Our Mission',
+          missionText:
+            'To create a space where school students can develop their intellectual abilities, learn constructive dialogue, and gain experience participating in intellectual competitions.',
+          goalsHeading: 'Our Goals',
+          goalsList: [
+            'Developing critical and analytical thinking.',
+            'Improving argumentation and public speaking skills.',
+            'Fostering a culture of constructive discussion.',
+            'Creating opportunities for interaction among students from different schools.',
+            'Popularizing intellectual competitions among youth.'
+          ],
+          approachHeading: 'Our Approach',
+          approachText:
+            'We view debate not merely as a competition, but as an educational process. What matters here is not only the persuasiveness of a speech and the strength of arguments, but also the ability to listen to an opponent, analyze opposing viewpoints, and draw independent conclusions.',
+          futureHeading: 'Our Future',
+          futureText:
+            '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> strives to become a platform for hosting intellectual events that unite students and educational institutions. We plan to gradually expand the project, attract new participants, and create opportunities for the growth of the debate community.',
+          contactsTitle: 'Contacts:'
+        }
+      },
+
+      // Разделы выдвижного меню
+      MENU_SECTIONS: [
+        {
+          id: 'nav',
+          type: 'list',
+          title: { kz: '1. Навигация', ru: '1. Навигация', en: '1. Navigation' },
+          items: [
+            { href: '/', label: { kz: 'Басты бет', ru: 'Главная', en: 'Home' } },
+            { href: '/aboutus', label: { kz: 'Жоба туралы', ru: 'О проекте', en: 'About Project' } },
+            { href: '/about', label: { kz: 'Турнир', ru: 'Турнир', en: 'Tournament' } },
+            { href: '/docs', label: { kz: 'Құжаттар', ru: 'Документы', en: 'Documents' } },
+            { href: '/faq', label: { kz: 'Жиі қойылатын сұрақтар', ru: 'Часто задаваемые вопросы', en: 'Frequently Asked Questions' } }
+          ]
+        },
+        {
+          id: 'participants',
+          type: 'accordion',
+          title: { kz: '2. Қатысушыларға', ru: '2. Участникам', en: '2. For Participants' },
+          items: [
+            { href: '/registration', label: { kz: 'Менің тіркелуім', ru: 'Моя регистрация', en: 'My Registration' } },
+            { href: '/status', label: { kz: 'Өтінім мәртебесі', ru: 'Статус заявки', en: 'Application Status' } },
+            { href: '/team', label: { kz: 'Команда туралы ақпарат', ru: 'Информация о команде', en: 'Team Information' } },
+            { href: '/results', label: { kz: 'Турнир нәтижелері', ru: 'Результаты турнира', en: 'Tournament Results' } }
+          ]
+        },
+        {
+          id: 'general',
+          type: 'accordion',
+          title: { kz: '3. Жалпы мәліметтер', ru: '3. Общие сведения', en: '3. General Information' },
+          items: [
+            { href: '/gi#contact', label: { kz: 'Ұйымдастырушымен байланысу', ru: 'Связаться с организатором', en: 'Contact Organizer' } },
+            { href: '/gi#partner', label: { kz: 'Серіктес / демеуші болу', ru: 'Стать партнером / спонсором', en: 'Become a Partner / Sponsor' } },
+            { href: '/gi#report', label: { kz: 'Мәселе туралы жазу', ru: 'Написать об проблеме', en: 'Report an Issue' } }
+          ]
+        }
+      ],
+
+      // Ссылки в левой колонке футера
+      FOOTER_LINKS: [
+        { href: '/docs', label: { kz: 'Құжаттама', ru: 'Документация', en: 'Documentation' } },
+        { href: '/sponsors', label: { kz: 'Серіктестер', ru: 'Партнеры', en: 'Partners' } },
+        { href: '/aboutus', label: { kz: 'Біз туралы', ru: 'О нас', en: 'About Us' } },
+        { href: '/about', label: { kz: 'Турнир туралы толығырақ', ru: 'Подробнее о турнире', en: 'More About the Tournament' } }
+      ],
+
+      // Контакты в правой колонке футера
+      CONTACTS: [
+        { text: 'stepny.debate@gmail.com', href: 'mailto:stepny.debate@gmail.com' },
+        { text: 'Instagram: @stepny.debate', href: 'https://instagram.com/stepny.debate' },
+        { text: 'Tiktok: @stepny.debate', href: 'https://tiktok.com/@stepny.debate' },
+        { text: 'Telegram: @StepNysupport', href: 'https://t.me/StepNysupport' },
+        { text: 'Telegram Channel: @StepNyDebate', href: 'https://t.me/StepNyDebate' }
+      ]
+    };
+
+    let currentLang = SITE_CONFIG.defaultLang;
+    const openAccordions = new Set();
+
+    // Привязка маршрутов логотипов
+    document.getElementById('header-logo-link').setAttribute('href', SITE_CONFIG.ROUTES.home);
+    document.getElementById('menu-logo-link').setAttribute('href', SITE_CONFIG.ROUTES.home);
+
+    // Отрисовка бесконечной ленты из 20 партнеров / спонсоров
+    function renderPartnersMarquee() {
+      const track = document.getElementById('partners-marquee-track');
+      if (!track) return;
+
+      const directionClass = SITE_CONFIG.PARTNERS_DIRECTION === 'right' ? 'dir-right' : 'dir-left';
+      track.classList.remove('dir-left', 'dir-right');
+      track.classList.add(directionClass);
+      track.style.setProperty('--marquee-duration', `${SITE_CONFIG.PARTNERS_SPEED_SECONDS || 42}s`);
+
+      const buildPartnerCard = (partner, index, isDuplicate = false) => {
+        const num = String(index + 1).padStart(2, '0');
+        const hasImage = partner.image && partner.image.trim() !== '';
+
+        const mediaHtml = hasImage
+          ? `<img
+               src="${partner.image.trim()}"
+               alt="${partner.name}"
+               loading="lazy"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+               class="w-full h-full object-cover"
+             />
+             <div style="display:none" class="w-full h-full flex-col items-center justify-center bg-[#FAF9F6] p-2">
+               <span class="font-mono-code text-xs font-bold text-[#0047AB]">${num}</span>
+               <span class="w-4 h-0.5 bg-[#111111] mt-1"></span>
+             </div>`
+          : `<div class="w-full h-full flex flex-col items-center justify-center bg-[#FAF9F6] group-hover:bg-[#111111] transition-colors p-2">
+               <span class="font-mono-code text-sm sm:text-base font-bold text-[#0047AB] group-hover:text-[#FAF9F6] transition-colors">${num}</span>
+               <span class="w-5 h-0.5 bg-[#111111] group-hover:bg-[#0047AB] mt-1.5 transition-colors"></span>
+             </div>`;
+
+        return `
+          <div ${isDuplicate ? 'aria-hidden="true"' : ''} class="group flex flex-col items-center w-24 sm:w-28 shrink-0 mr-6 sm:mr-8">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 aspect-square border-2 border-[#111111] bg-[#FAF9F6] overflow-hidden flex items-center justify-center transition-transform duration-200 group-hover:-translate-y-1">
+              ${mediaHtml}
+            </div>
+            <p class="mt-2.5 text-xs sm:text-sm font-bold text-center text-[#111111] leading-tight line-clamp-2 w-full">
+              ${partner.name}
+            </p>
+          </div>
+        `;
+      };
+
+      const singleSetHtml = SITE_CONFIG.PARTNERS.map((p, idx) => buildPartnerCard(p, idx, false)).join('');
+      const duplicateSetHtml = SITE_CONFIG.PARTNERS.map((p, idx) => buildPartnerCard(p, idx, true)).join('');
+
+      track.innerHTML = singleSetHtml + duplicateSetHtml;
+    }
+
+    // Отрисовка разделов выдвижного меню
+    function renderMenu(lang) {
+      const container = document.getElementById('menu-sections-container');
+      container.innerHTML = SITE_CONFIG.MENU_SECTIONS.map((section) => {
+        const sectionTitle = section.title[lang] || section.title.ru;
+        const itemsHtml = section.items
+          .map((item) => {
+            const label = item.label[lang] || item.label.ru;
+            const isActive = item.href === SITE_CONFIG.currentPath;
+            const activeClass = isActive ? 'text-[#0047AB] font-bold' : 'hover:text-[#0047AB]';
+            return `
+              <li>
+                <a href="${item.href}" data-menu-link class="${activeClass} transition-colors inline-flex items-center gap-2">
+                  <span>•</span><span>${label}</span>
+                </a>
+              </li>
+            `;
+          })
+          .join('');
+
+        if (section.type === 'accordion') {
+          const isOpen = openAccordions.has(section.id);
+          return `
+            <div>
+              <button
+                type="button"
+                data-accordion-toggle="${section.id}"
+                aria-expanded="${isOpen}"
+                class="w-full flex items-center justify-between text-left text-sm font-extrabold uppercase tracking-wider text-[#111111] hover:text-[#0047AB] transition-colors cursor-pointer"
+              >
+                <span>${sectionTitle}</span>
+                <span class="accordion-arrow text-xs transition-transform duration-150" style="transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}">▼</span>
+              </button>
+              <ul id="acc-${section.id}" class="accordion-content ${isOpen ? 'open' : ''} space-y-2.5 pl-1 pt-3 text-base font-medium">
+                ${itemsHtml}
+              </ul>
+            </div>
+          `;
+        }
+
+        return `
+          <div>
+            <p class="text-sm font-extrabold uppercase tracking-wider text-[#111111] mb-3">
+              ${sectionTitle}
+            </p>
+            <ul class="space-y-2.5 pl-1 text-base font-medium">
+              ${itemsHtml}
+            </ul>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('[data-accordion-toggle]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-accordion-toggle');
+          const content = document.getElementById(`acc-${id}`);
+          const arrow = btn.querySelector('.accordion-arrow');
+          const nowOpen = content.classList.toggle('open');
+          if (nowOpen) {
+            openAccordions.add(id);
+          } else {
+            openAccordions.delete(id);
+          }
+          btn.setAttribute('aria-expanded', String(nowOpen));
+          if (arrow) {
+            arrow.style.transform = nowOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+          }
+        });
+      });
+
+      container.querySelectorAll('[data-menu-link]').forEach((link) => {
+        link.addEventListener('click', closeMenu);
+      });
+    }
+
+    // Отрисовка основного контента страницы на выбранном языке
+    function renderPageContent(lang) {
+      const c = SITE_CONFIG.CONTENT[lang] || SITE_CONFIG.CONTENT.ru;
+
+      document.getElementById('company-intro-text').innerHTML = c.companyIntro;
+      document.getElementById('company-launch-text').textContent = c.companyLaunch;
+      document.getElementById('partners-heading').textContent = c.partnersHeading;
+
+      document.getElementById('about-project-heading').textContent = c.aboutHeading;
+      document.getElementById('about-project-paragraphs').innerHTML = c.aboutParagraphs
+        .map((p) => `<p>${p}</p>`)
+        .join('');
+
+      document.getElementById('mission-heading').textContent = c.missionHeading;
+      document.getElementById('mission-text').textContent = c.missionText;
+
+      document.getElementById('goals-heading').textContent = c.goalsHeading;
+      document.getElementById('goals-list').innerHTML = c.goalsList
+        .map(
+          (goal) => `
+            <li class="flex items-start gap-3">
+              <span class="text-[#0047AB] font-extrabold select-none">■</span>
+              <span>${goal}</span>
+            </li>
+          `
+        )
+        .join('');
+
+      document.getElementById('approach-heading').textContent = c.approachHeading;
+      document.getElementById('approach-text').textContent = c.approachText;
+
+      document.getElementById('future-heading').textContent = c.futureHeading;
+      document.getElementById('future-text').innerHTML = c.futureText;
+    }
+
+    // Отрисовка эталонного футера
+    function renderFooter(lang) {
+      const linksList = document.getElementById('footer-links-list');
+      linksList.innerHTML = SITE_CONFIG.FOOTER_LINKS.map((link) => {
+        const label = link.label[lang] || link.label.ru;
+        return `
+          <li>
+            <a href="${link.href}" class="hover:text-[#0047AB] transition-colors inline-block">
+              ${label}
+            </a>
+          </li>
+        `;
+      }).join('');
+
+      const c = SITE_CONFIG.CONTENT[lang] || SITE_CONFIG.CONTENT.ru;
+      document.getElementById('footer-contacts-title').textContent = c.contactsTitle;
+
+      const contactsList = document.getElementById('footer-contacts-list');
+      contactsList.innerHTML = SITE_CONFIG.CONTACTS.map((contact) => {
+        if (contact.href) {
+          const isExternal = contact.href.startsWith('http');
+          return `
+            <p>
+              <a
+                href="${contact.href}"
+                ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}
+                class="hover:text-[#0047AB] transition-colors"
+              >
+                ${contact.text}
+              </a>
+            </p>
+          `;
+        }
+        return `<p>${contact.text}</p>`;
+      }).join('');
+    }
+
+    // Переключение языка
+    function setLanguage(lang) {
+      if (!SITE_CONFIG.CONTENT[lang]) return;
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('.lang-btn').forEach((btn) => {
+        const isActive = btn.getAttribute('data-lang-btn') === lang;
+        if (isActive) {
+          btn.classList.add('bg-[#111111]', 'text-[#FAF9F6]');
+          btn.classList.remove('bg-[#FAF9F6]', 'text-[#111111]');
+        } else {
+          btn.classList.remove('bg-[#111111]', 'text-[#FAF9F6]');
+          btn.classList.add('bg-[#FAF9F6]', 'text-[#111111]');
+        }
+      });
+
+      renderMenu(lang);
+      renderPageContent(lang);
+      renderFooter(lang);
+    }
+
+    // Управление выдвижным меню
+    const menuOpenBtn = document.getElementById('menu-open-btn');
+    const menuCloseBtn = document.getElementById('menu-close-btn');
+    const slideMenu = document.getElementById('slide-menu');
+    const menuBackdrop = document.getElementById('menu-backdrop');
+
+    function openMenu() {
+      slideMenu.classList.remove('translate-x-full');
+      slideMenu.setAttribute('aria-hidden', 'false');
+      menuBackdrop.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      slideMenu.classList.add('translate-x-full');
+      slideMenu.setAttribute('aria-hidden', 'true');
+      menuBackdrop.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    menuOpenBtn.addEventListener('click', openMenu);
+    menuCloseBtn.addEventListener('click', closeMenu);
+    menuBackdrop.addEventListener('click', closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.getAttribute('data-lang-btn'));
+      });
+    });
+
+    // Плавное появление секций при загрузке и прокрутке
+    const revealBlocks = document.querySelectorAll('.reveal-block');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+      );
+      revealBlocks.forEach((block) => observer.observe(block));
+    } else {
+      revealBlocks.forEach((block) => block.classList.add('is-visible'));
+    }
+
+    // Инициализация страницы
+    renderPartnersMarquee();
+    setLanguage(currentLang);
+  </script>
+</body>
+</html>
