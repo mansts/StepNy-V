@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StepNy Debate — О турнире</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      border-radius: 0px !important;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #FAF9F6;
+      color: #111111;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-section {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#FAF9F6] text-[#111111] antialiased selection:bg-[#0047AB] selection:text-[#FAF9F6] min-h-screen flex flex-col justify-between">
+
+  <!-- Единая шапка и меню -->
+  <div id="site-header"></div>
+
+  <main class="w-full max-w-5xl mx-auto px-4 sm:px-6 flex-grow">
+
+    <!-- 1. Hero + Цели турнира -->
+    <section class="reveal-section pt-10 sm:pt-16 pb-10 sm:pb-12 border-b-2 border-[#111111]">
+      <div class="max-w-3xl mb-8 sm:mb-10">
+        <p id="ab-eyebrow" class="font-mono-code text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#0047AB] mb-3">
+          STEPNY DEBATE
+        </p>
+        <h1 id="ab-heading" class="text-3xl sm:text-5xl font-extrabold tracking-tight uppercase leading-[1.08] mb-4">
+          О ТУРНИРЕ
+        </h1>
+      </div>
+
+      <div class="border-2 border-[#111111] bg-[#EFECE4] p-6 sm:p-8">
+        <h2 id="ab-goals-title" class="text-lg sm:text-xl font-extrabold uppercase tracking-tight mb-3">
+          ЦЕЛИ ТУРНИРА
+        </h2>
+        <p id="ab-goals-text" class="text-base sm:text-lg leading-relaxed text-[#222222] max-w-3xl"></p>
+      </div>
+    </section>
+
+    <!-- 2. Формат проведения + кнопки этапов -->
+    <section class="reveal-section py-10 sm:py-14 border-b-2 border-[#111111]">
+      <h2 id="ab-format-title" class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight mb-6 sm:mb-8">
+        ФОРМАТ ПРОВЕДЕНИЯ
+      </h2>
+
+      <div id="format-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t-2 border-l-2 border-[#111111] mb-8"></div>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          id="btn-stage-1"
+          href="/docs/#stage1"
+          class="inline-flex items-center justify-between gap-4 px-6 py-4 bg-[#111111] text-[#FAF9F6] border-2 border-[#111111] text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-[#0047AB] hover:border-[#0047AB] active:scale-[0.98] transition-all"
+        >
+          <span id="btn-stage-1-text">Подробнее об 1 этапе</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
+          id="btn-stage-2"
+          href="/docs/#stage2"
+          class="inline-flex items-center justify-between gap-4 px-6 py-4 bg-[#FAF9F6] text-[#111111] border-2 border-[#111111] text-xs sm:text-sm font-bold uppercase tracking-widest hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-[0.98] transition-all"
+        >
+          <span id="btn-stage-2-text">Подробнее об 2 этапе</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Формат дебатов -->
+    <section class="reveal-section py-10 sm:py-14 border-b-2 border-[#111111]">
+      <h2 id="ab-debate-title" class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight mb-4">
+        ФОРМАТ ДЕБАТОВ
+      </h2>
+      <p id="ab-debate-intro" class="text-base sm:text-lg leading-relaxed text-[#222222] max-w-3xl mb-8"></p>
+
+      <!-- Задача команд -->
+      <h3 id="ab-roles-title" class="font-mono-code text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#0047AB] mb-4">
+        ЗАДАЧА КОМАНД
+      </h3>
+      <div id="roles-grid" class="grid grid-cols-1 md:grid-cols-2 border-2 border-[#111111] mb-8"></div>
+
+      <!-- Регламент в цифрах -->
+      <div id="rules-stats" class="grid grid-cols-2 lg:grid-cols-4 border-t-2 border-l-2 border-[#111111] mb-6"></div>
+
+      <div class="space-y-3 text-base sm:text-lg leading-relaxed text-[#222222] max-w-3xl">
+        <p id="ab-debate-rules"></p>
+        <p>
+          <span id="ab-debate-docs-prefix">Подробнее в документации:</span>
+          <a href="/docs/" class="font-mono-code font-semibold text-[#0047AB] underline underline-offset-4 hover:text-[#111111] transition-colors">
+            stepny.online/docs
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Почему стоит участвовать? -->
+    <section class="reveal-section py-10 sm:py-14 border-b-2 border-[#111111]">
+      <h2 id="ab-why-title" class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight mb-6 sm:mb-8">
+        ПОЧЕМУ СТОИТ УЧАСТВОВАТЬ?
+      </h2>
+      <ul id="why-list" class="border-t-2 border-[#111111]"></ul>
+    </section>
+
+    <!-- 5. Награждение -->
+    <section class="reveal-section py-10 sm:py-14">
+      <div class="border-2 border-[#111111] bg-[#EFECE4] p-6 sm:p-8">
+        <h2 id="ab-awards-title" class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight mb-6">
+          НАГРАЖДЕНИЕ
+        </h2>
+        <div id="awards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Единый футер -->
+  <div id="site-footer"></div>
+
+  <!-- 1. Сначала общий layout.js -->
+  <script src="/layout.js"></script>
+
+  <!-- 2. Логика страницы -->
+  <script>
+    const PAGE_DATA = {
+      // Ссылки для кнопок этапов (при необходимости замени на свои)
+      LINKS: {
+        stage1: '/docs/#stage1',
+        stage2: '/docs/#stage2'
+      },
+
+      CONTENT: {
+        ru: {
+          eyebrow: 'STEPNY DEBATE / ИНФОРМАЦИЯ',
+          heading: 'О ТУРНИРЕ',
+          goalsTitle: 'ЦЕЛИ ТУРНИРА',
+          goalsText: 'Развитие критического мышления, ораторского мастерства, аргументации и навыков командной работы среди школьников.',
+
+          formatTitle: 'ФОРМАТ ПРОВЕДЕНИЯ',
+          formatItems: [
+            { label: 'Участники', value: 'Учащиеся 9–10 классов' },
+            { label: 'Команда', value: '3 человека' },
+            { label: 'Представительство', value: 'Одна команда от школы' },
+            { label: 'Участие', value: 'Бесплатное' },
+            { label: 'Формат', value: 'Межшкольные дебаты' },
+            { label: 'Продолжительность', value: 'Один день' }
+          ],
+          stage1Btn: 'Подробнее об 1 этапе',
+          stage2Btn: 'Подробнее об 2 этапе',
+
+          debateTitle: 'ФОРМАТ ДЕБАТОВ',
+          debateIntro: 'В каждой команде 3 участника. Команды делятся на пропозицию (утверждение) и оппозицию (отрицание) случайным образом уже во время начала.',
+          rolesTitle: 'ЗАДАЧА КОМАНД',
+          roles: [
+            {
+              tag: 'PROPOSITION',
+              title: 'Команда утверждения',
+              text: 'Должна доказать правильность предложенной позиции.'
+            },
+            {
+              tag: 'OPPOSITION',
+              title: 'Команда отрицания',
+              text: 'Должна опровергнуть её и представить альтернативные аргументы.'
+            }
+          ],
+          stats: [
+            { num: '5 мин', label: 'Выступление и ответы на вопросы' },
+            { num: '+30 сек', label: 'Дополнительное время (1 раз)' },
+            { num: '3 раза', label: 'Право отказаться от вопроса' },
+            { num: '25 сек', label: 'Интервал между вопросами' }
+          ],
+          debateRules: 'Для каждого спикера даётся ровно 5 минут для выступления и ответов на вопросы. Он может 1 раз попросить дополнительные 30 секунд. Спикер имеет право отказаться от вопроса 3 раза, вопросы можно задавать с интервалом 25 секунд. Темы будут опубликованы за неделю до 1 этапа и за неделю до 2 этапа.',
+          docsPrefix: 'Подробнее в документации:',
+
+          whyTitle: 'ПОЧЕМУ СТОИТ УЧАСТВОВАТЬ?',
+          whyItems: [
+            'Получение опыта участия в интеллектуальных соревнованиях.',
+            'Возможность познакомиться с учениками других школ.',
+            'Развитие коммуникативных навыков.',
+            'Получение дипломов участников и призёров.',
+            'Возможность проверить свои способности в дискуссии.'
+          ],
+
+          awardsTitle: 'НАГРАЖДЕНИЕ',
+          awardsIntro: 'Награждение пройдёт в тот же день.',
+          awardsCards: [
+            {
+              tag: 'УЧАСТНИКАМ',
+              text: 'Для участников предусмотрены дипломы и грамоты в электронном виде, которые будут доступны на сайте и высланы капитану команды.'
+            },
+            {
+              tag: 'ПРИЗЁРАМ И НОМИНАЦИЯМ',
+              text: 'Дипломы и грамоты для призёров и отдельных номинаций будут торжественно вручены во время награждения в тот же день.'
+            }
+          ]
+        },
+
+        kz: {
+          eyebrow: 'STEPNY DEBATE / АҚПАРАТ',
+          heading: 'ТУРНИР ТУРАЛЫ',
+          goalsTitle: 'ТУРНИР МАҚСАТЫ',
+          goalsText: 'Оқушылар арасында сыни ойлауды, шешендік шеберлікті, дәлелдеу дағдыларын және командалық жұмыс қабілеттерін дамыту.',
+
+          formatTitle: 'ӨТКІЗУ ФОРМАТЫ',
+          formatItems: [
+            { label: 'Қатысушылар', value: '9–10 сынып оқушылары' },
+            { label: 'Команда', value: '3 адам' },
+            { label: 'Өкілдік', value: 'Әр мектептен бір команда' },
+            { label: 'Қатысу', value: 'Тегін' },
+            { label: 'Формат', value: 'Мектепаралық дебаттар' },
+            { label: 'Ұзақтығы', value: 'Бір күн' }
+          ],
+          stage1Btn: '1-кезең туралы толығырақ',
+          stage2Btn: '2-кезең туралы толығырақ',
+
+          debateTitle: 'ДЕБАТ ФОРМАТЫ',
+          debateIntro: 'Әр командада 3 қатысушы болады. Командалар жақтаушы (пропозиция) және даттаушы (оппозиция) болып басталу кезінде кездейсоқ бөлінеді.',
+          rolesTitle: 'КОМАНДАЛАРДЫҢ МІНДЕТІ',
+          roles: [
+            {
+              tag: 'PROPOSITION',
+              title: 'Жақтаушы команда',
+              text: 'Ұсынылған ұстанымның дұрыстығын дәлелдеуі тиіс.'
+            },
+            {
+              tag: 'OPPOSITION',
+              title: 'Даттаушы команда',
+              text: 'Оны жоққа шығарып, балама дәлелдер ұсынуы тиіс.'
+            }
+          ],
+          stats: [
+            { num: '5 мин', label: 'Сөз сөйлеу және сұрақтарға жауап' },
+            { num: '+30 сек', label: 'Қосымша уақыт (1 рет)' },
+            { num: '3 рет', label: 'Сұрақтан бас тарту құқығы' },
+            { num: '25 сек', label: 'Сұрақтар арасындағы аралық' }
+          ],
+          debateRules: 'Әр спикерге сөз сөйлеу және сұрақтарға жауап беру үшін дәл 5 минут беріледі. Ол 1 рет қосымша 30 секунд сұрай алады. Спикер сұрақтан 3 рет бас тартуға құқылы, сұрақтар 25 секунд аралықпен қойылады. Тақырыптар 1-кезеңге бір апта қалғанда және 2-кезеңге бір апта қалғанда жарияланады.',
+          docsPrefix: 'Толығырақ құжаттамада:',
+
+          whyTitle: 'НЕГЕ ҚАТЫСУ КЕРЕК?',
+          whyItems: [
+            'Зияткерлік сайыстарға қатысу тәжірибесін жинау.',
+            'Басқа мектеп оқушыларымен танысу мүмкіндігі.',
+            'Коммуникативтік дағдыларды дамыту.',
+            'Қатысушы және жүлдегер дипломдарын алу.',
+            'Пікірталаста өз қабілетін сынау мүмкіндігі.'
+          ],
+
+          awardsTitle: 'МАРАПАТТАУ',
+          awardsIntro: 'Марапаттау сол күні өтеді.',
+          awardsCards: [
+            {
+              tag: 'ҚАТЫСУШЫЛАРҒА',
+              text: 'Қатысушылар үшін электронды түрдегі дипломдар мен грамоталар қарастырылған — олар сайтта қолжетімді болады және команда капитанына жіберіледі.'
+            },
+            {
+              tag: 'ЖҮЛДЕГЕРЛЕР МЕН НОМИНАЦИЯЛАР',
+              text: 'Жүлдегерлер мен жеке номинация иегерлеріне арналған дипломдар мен грамоталар сол күні марапаттау рәсімінде салтанатты түрде табысталады.'
+            }
+          ]
+        },
+
+        en: {
+          eyebrow: 'STEPNY DEBATE / INFORMATION',
+          heading: 'ABOUT THE TOURNAMENT',
+          goalsTitle: 'TOURNAMENT GOALS',
+          goalsText: 'Developing critical thinking, public speaking, argumentation, and teamwork skills among school students.',
+
+          formatTitle: 'EVENT FORMAT',
+          formatItems: [
+            { label: 'Participants', value: 'Grades 9–10 students' },
+            { label: 'Team Size', value: '3 people' },
+            { label: 'Representation', value: 'One team per school' },
+            { label: 'Participation', value: 'Free of charge' },
+            { label: 'Format', value: 'Inter-school debates' },
+            { label: 'Duration', value: 'One day' }
+          ],
+          stage1Btn: 'More about Stage 1',
+          stage2Btn: 'More about Stage 2',
+
+          debateTitle: 'DEBATE FORMAT',
+          debateIntro: 'Each team has 3 members. Teams are randomly assigned to Proposition and Opposition at the start of the round.',
+          rolesTitle: 'TEAM ROLES',
+          roles: [
+            {
+              tag: 'PROPOSITION',
+              title: 'Proposition Team',
+              text: 'Must prove the validity of the proposed motion.'
+            },
+            {
+              tag: 'OPPOSITION',
+              title: 'Opposition Team',
+              text: 'Must refute it and present alternative arguments.'
+            }
+          ],
+          stats: [
+            { num: '5 min', label: 'Speech & Q&A per speaker' },
+            { num: '+30 sec', label: 'Extra time (once)' },
+            { num: '3 times', label: 'Right to decline a question' },
+            { num: '25 sec', label: 'Interval between questions' }
+          ],
+          debateRules: 'Each speaker is given exactly 5 minutes for their speech and answering questions. They may request an extra 30 seconds once. A speaker may decline up to 3 questions, and questions can be asked at 25-second intervals. Topics will be published one week before Stage 1 and one week before Stage 2.',
+          docsPrefix: 'Full details in documentation:',
+
+          whyTitle: 'WHY PARTICIPATE?',
+          whyItems: [
+            'Gain experience in intellectual competitions.',
+            'Meet students from other schools.',
+            'Develop communication skills.',
+            'Receive participant and winner diplomas.',
+            'Test your abilities in structured discussion.'
+          ],
+
+          awardsTitle: 'AWARDS',
+          awardsIntro: 'The award ceremony takes place on the same day.',
+          awardsCards: [
+            {
+              tag: 'PARTICIPANTS',
+              text: 'Digital diplomas and certificates will be available on the website and sent directly to the team captain.'
+            },
+            {
+              tag: 'WINNERS & NOMINATIONS',
+              text: 'Diplomas and certificates for prize-winners and special nominations will be presented during the official ceremony on the same day.'
+            }
+          ]
+        }
+      }
+    };
+
+    document.getElementById('btn-stage-1').setAttribute('href', PAGE_DATA.LINKS.stage1);
+    document.getElementById('btn-stage-2').setAttribute('href', PAGE_DATA.LINKS.stage2);
+
+    function updatePageContent(lang) {
+      const t = PAGE_DATA.CONTENT[lang] || PAGE_DATA.CONTENT.ru;
+
+      document.getElementById('ab-eyebrow').textContent = t.eyebrow;
+      document.getElementById('ab-heading').textContent = t.heading;
+      document.getElementById('ab-goals-title').textContent = t.goalsTitle;
+      document.getElementById('ab-goals-text').textContent = t.goalsText;
+
+      // Формат проведения
+      document.getElementById('ab-format-title').textContent = t.formatTitle;
+      document.getElementById('format-grid').innerHTML = t.formatItems
+        .map(
+          (item) => `
+            <div class="p-5 sm:p-6 bg-[#FAF9F6] border-r-2 border-b-2 border-[#111111]">
+              <p class="font-mono-code text-xs uppercase tracking-wider text-[#666666] mb-1.5">${item.label}</p>
+              <p class="font-display text-lg sm:text-xl font-bold text-[#111111]">${item.value}</p>
+            </div>
+          `
+        )
+        .join('');
+
+      document.getElementById('btn-stage-1-text').textContent = t.stage1Btn;
+      document.getElementById('btn-stage-2-text').textContent = t.stage2Btn;
+
+      // Формат дебатов
+      document.getElementById('ab-debate-title').textContent = t.debateTitle;
+      document.getElementById('ab-debate-intro').textContent = t.debateIntro;
+      document.getElementById('ab-roles-title').textContent = t.rolesTitle;
+
+      document.getElementById('roles-grid').innerHTML = t.roles
+        .map((role, idx) => {
+          const isDark = idx === 0;
+          const theme = isDark ? 'bg-[#111111] text-[#FAF9F6]' : 'bg-[#FAF9F6] text-[#111111]';
+          const border = idx > 0 ? 'border-t-2 md:border-t-0 md:border-l-2 border-[#111111]' : '';
+          return `
+            <div class="${theme} ${border} p-6 sm:p-8">
+              <span class="font-mono-code text-xs uppercase tracking-widest opacity-60 block mb-2">${role.tag}</span>
+              <h3 class="text-xl sm:text-2xl font-extrabold mb-2">${role.title}</h3>
+              <p class="text-sm sm:text-base leading-relaxed opacity-85">${role.text}</p>
+            </div>
+          `;
+        })
+        .join('');
+
+      document.getElementById('rules-stats').innerHTML = t.stats
+        .map(
+          (s) => `
+            <div class="p-5 bg-[#FAF9F6] border-r-2 border-b-2 border-[#111111]">
+              <p class="font-display text-2xl sm:text-3xl font-extrabold text-[#0047AB] mb-1">${s.num}</p>
+              <p class="text-xs sm:text-sm text-[#333333] leading-snug">${s.label}</p>
+            </div>
+          `
+        )
+        .join('');
+
+      document.getElementById('ab-debate-rules').textContent = t.debateRules;
+      document.getElementById('ab-debate-docs-prefix').textContent = t.docsPrefix;
+
+      // Почему стоит участвовать
+      document.getElementById('ab-why-title').textContent = t.whyTitle;
+      document.getElementById('why-list').innerHTML = t.whyItems
+        .map(
+          (item, idx) => `
+            <li class="py-4 sm:py-5 border-b-2 border-[#111111] flex items-baseline gap-4 sm:gap-6">
+              <span class="font-mono-code text-sm font-bold text-[#0047AB] shrink-0">0${idx + 1}</span>
+              <span class="text-base sm:text-lg font-medium text-[#111111]">${item}</span>
+            </li>
+          `
+        )
+        .join('');
+
+      // Награждение
+      document.getElementById('ab-awards-title').textContent = t.awardsTitle;
+      document.getElementById('awards-grid').innerHTML = t.awardsCards
+        .map(
+          (card) => `
+            <div class="border-2 border-[#111111] bg-[#FAF9F6] p-5 sm:p-6">
+              <p class="font-mono-code text-xs font-bold uppercase tracking-widest text-[#0047AB] mb-2">${card.tag}</p>
+              <p class="text-sm sm:text-base leading-relaxed text-[#222222]">${card.text}</p>
+            </div>
+          `
+        )
+        .join('');
+    }
+
+    // Синхронизация языка с layout.js
+    window.addEventListener('stepny:langchange', (e) => {
+      updatePageContent(e.detail.lang);
+    });
+    updatePageContent(localStorage.getItem('stepny_lang') || 'ru');
+
+    // Плавное появление секций
+    const revealSections = document.querySelectorAll('.reveal-section');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+      );
+      revealSections.forEach((section) => revealObserver.observe(section));
+    } else {
+      revealSections.forEach((section) => section.classList.add('is-visible'));
+    }
+  </script>
+</body>
+</html>
