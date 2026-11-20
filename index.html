@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StepNy Debate — Образовательный дебатный проект</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      border-radius: 0px !important;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #FAF9F6;
+      color: #111111;
+      overflow-x: hidden;
+    }
+    .accordion-content {
+      display: none;
+    }
+    .accordion-content.open {
+      display: block;
+    }
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#FAF9F6] text-[#111111] antialiased selection:bg-[#0047AB] selection:text-[#FAF9F6]">
+
+  <!-- Шапка сайта -->
+  <header class="sticky top-0 z-40 bg-[#FAF9F6] border-b-2 border-[#111111]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
+      <!-- Логотип -->
+      <a href="#top" class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#111111] select-none shrink-0">
+        Step<span class="text-[#0047AB]">Ny</span> Debate
+      </a>
+
+      <!-- Переключатель языков и кнопка меню (три полосы) -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Прямоугольная коробка языков -->
+        <div role="group" aria-label="Language switcher" class="inline-flex border-2 border-[#111111] bg-[#FAF9F6]">
+          <button
+            type="button"
+            data-lang-btn="kz"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+          >
+            kz
+          </button>
+          <button
+            type="button"
+            data-lang-btn="ru"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+          >
+            ru
+          </button>
+          <button
+            type="button"
+            data-lang-btn="en"
+            class="lang-btn px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors cursor-pointer"
+          >
+            en
+          </button>
+        </div>
+
+        <!-- Кнопка меню (три горизонтальные линии) -->
+        <button
+          id="menu-open-btn"
+          type="button"
+          aria-label="Открыть меню"
+          class="p-2.5 border-2 border-[#111111] bg-[#FAF9F6] hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-95 transition-all cursor-pointer flex flex-col justify-center items-center gap-1.5 w-11 h-10"
+        >
+          <span class="block w-5 h-0.5 bg-current"></span>
+          <span class="block w-5 h-0.5 bg-current"></span>
+          <span class="block w-5 h-0.5 bg-current"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Выдвижное меню -->
+  <div id="menu-backdrop" class="fixed inset-0 z-50 bg-[#111111]/40 hidden"></div>
+  <aside
+    id="slide-menu"
+    aria-hidden="true"
+    class="fixed top-0 right-0 z-50 h-full w-full max-w-sm bg-[#FAF9F6] border-l-2 border-[#111111] transform translate-x-full transition-transform duration-200 ease-out flex flex-col justify-between overflow-y-auto"
+  >
+    <div class="p-6 sm:p-8">
+      <!-- Верхняя панель меню: логотип StepNy Debate, прямоугольный переключатель языков и кнопка закрытия в одну строку -->
+      <div class="flex items-center justify-between gap-2 pb-6 mb-6 border-b-2 border-[#111111]">
+        <span class="text-base sm:text-lg font-extrabold tracking-tight text-[#111111] truncate">
+          Step<span class="text-[#0047AB]">Ny</span> Debate
+        </span>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <div role="group" aria-label="Menu language switcher" class="inline-flex border-2 border-[#111111] bg-[#FAF9F6] shrink-0">
+            <button
+              type="button"
+              data-lang-btn="kz"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+            >
+              kz
+            </button>
+            <button
+              type="button"
+              data-lang-btn="ru"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider border-r-2 border-[#111111] transition-colors cursor-pointer"
+            >
+              ru
+            </button>
+            <button
+              type="button"
+              data-lang-btn="en"
+              class="lang-btn px-2 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+            >
+              en
+            </button>
+          </div>
+
+          <button
+            id="menu-close-btn"
+            type="button"
+            aria-label="Закрыть меню"
+            class="w-9 h-9 shrink-0 border-2 border-[#111111] flex items-center justify-center text-base font-bold hover:bg-[#111111] hover:text-[#FAF9F6] transition-colors cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Текстовые разделы меню без рамок -->
+      <nav class="space-y-7 text-[#111111]">
+        <!-- Раздел 1: Навигация (маркированный список) -->
+        <div>
+          <p data-i18n="menu.navTitle" class="text-sm font-extrabold uppercase tracking-wider text-[#111111] mb-3">
+            1. Навигация
+          </p>
+          <ul class="space-y-2.5 pl-1 text-base font-medium">
+            <li>
+              <a href="#top" data-menu-link="home" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2">
+                <span>•</span><span data-i18n="menu.navHome">Главная</span>
+              </a>
+            </li>
+            <li>
+              <a href="#about" data-menu-link="about" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2">
+                <span>•</span><span data-i18n="menu.navAbout">О проекте</span>
+              </a>
+            </li>
+            <li>
+              <a href="#tournament" data-menu-link="tournament" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2">
+                <span>•</span><span data-i18n="menu.navTournament">Турнир</span>
+              </a>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="docs" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.navDocs">Документы</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="faq" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.navFaq">Часто задаваемые вопросы</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Раздел 2: Участникам (аккордеон со стрелкой вниз) -->
+        <div>
+          <button
+            type="button"
+            data-accordion-toggle="acc-participants"
+            aria-expanded="false"
+            class="w-full flex items-center justify-between text-left text-sm font-extrabold uppercase tracking-wider text-[#111111] hover:text-[#0047AB] transition-colors cursor-pointer"
+          >
+            <span data-i18n="menu.participantsTitle">2. Участникам</span>
+            <span class="accordion-arrow text-xs transition-transform duration-150">▼</span>
+          </button>
+          <ul id="acc-participants" class="accordion-content space-y-2.5 pl-1 pt-3 text-base font-medium">
+            <li>
+              <button type="button" data-modal-trigger="register" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.partReg">Моя регистрация</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="status" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.partStatus">Статус заявки</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="team" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.partTeam">Информация о команде</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="results" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.partResults">Результаты турнира</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Раздел 3: Общие сведения (аккордеон со стрелкой вниз) -->
+        <div>
+          <button
+            type="button"
+            data-accordion-toggle="acc-general"
+            aria-expanded="false"
+            class="w-full flex items-center justify-between text-left text-sm font-extrabold uppercase tracking-wider text-[#111111] hover:text-[#0047AB] transition-colors cursor-pointer"
+          >
+            <span data-i18n="menu.generalTitle">3. Общие сведения</span>
+            <span class="accordion-arrow text-xs transition-transform duration-150">▼</span>
+          </button>
+          <ul id="acc-general" class="accordion-content space-y-2.5 pl-1 pt-3 text-base font-medium">
+            <li>
+              <button type="button" data-modal-trigger="contact" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.genContact">Связь с организаторами</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="partners" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.genPartner">Партнерство и спонсорство</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="issue" class="hover:text-[#0047AB] transition-colors inline-flex items-center gap-2 text-left cursor-pointer">
+                <span>•</span><span data-i18n="menu.genIssue">Сообщить о проблеме</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Подвал меню -->
+    <div class="p-6 sm:p-8 text-sm font-extrabold text-[#111111]">
+      © Step<span class="text-[#0047AB]">Ny</span> Debate
+    </div>
+  </aside>
+
+  <!-- Основной контент -->
+  <main id="top" class="max-w-5xl mx-auto px-4 sm:px-6">
+
+    <!-- Секция 1: Hero и описание проекта -->
+    <section id="about" class="reveal-section py-10 sm:py-16">
+      <div class="flex flex-row items-center justify-between gap-4 sm:gap-8 mb-10 sm:mb-14">
+        <h1 class="text-2xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.08] max-w-2xl">
+          Your next step starts here
+        </h1>
+
+        <!-- Компактная 1:1 квадратная минималистичная эмблема -->
+        <div
+          aria-label="StepNy Debate geometric emblem"
+          class="w-20 h-20 sm:w-28 sm:h-28 shrink-0 border-2 border-[#111111] bg-[#FAF9F6] p-2 sm:p-3 flex items-center justify-center"
+        >
+          <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="92" height="92" stroke="#111111" stroke-width="4" />
+            <rect x="18" y="54" width="26" height="28" fill="#111111" />
+            <rect x="44" y="34" width="22" height="48" fill="#0047AB" />
+            <rect x="66" y="18" width="16" height="64" fill="#111111" />
+            <line x1="18" y1="24" x2="54" y2="24" stroke="#0047AB" stroke-width="5" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="max-w-3xl space-y-6 text-base sm:text-xl leading-relaxed font-normal text-[#111111]">
+        <p id="intro-p1">
+          <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> — образовательный дебатный проект, направленный на развитие критического мышления, ораторского мастерства, аргументации, аналитических способностей и навыков публичного выступления среди школьников.
+        </p>
+        <p id="intro-p2">
+          Проект проводится в рамках образовательной инициативы <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong> и объединяет учащихся разных школ для интеллектуального соревнования, обмена мнениями и обсуждения актуальных вопросов.
+        </p>
+      </div>
+
+      <!-- Две центрированные кнопки -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-10">
+        <button
+          type="button"
+          data-modal-trigger="register"
+          data-i18n="hero.registerBtn"
+          class="w-full sm:w-auto px-8 py-4 bg-[#111111] text-[#FAF9F6] border-2 border-[#111111] text-sm font-bold uppercase tracking-widest hover:bg-[#0047AB] hover:border-[#0047AB] active:scale-[0.98] transition-all duration-150 cursor-pointer"
+        >
+          Зарегистрироваться
+        </button>
+        <button
+          type="button"
+          data-modal-trigger="aboutDetails"
+          data-i18n="hero.detailsBtn"
+          class="w-full sm:w-auto px-8 py-4 bg-transparent text-[#111111] border-2 border-[#111111] text-sm font-bold uppercase tracking-widest hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-[0.98] transition-all duration-150 cursor-pointer"
+        >
+          Подробнее
+        </button>
+      </div>
+    </section>
+
+    <!-- Секция 2: Турнир состоит из 2 этапов -->
+    <section id="tournament" class="reveal-section py-12 sm:py-16">
+      <h2 data-i18n="stages.heading" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-center mb-10">
+        Турнир состоит из 2 этапов
+      </h2>
+
+      <!-- Две отдельные карточки (gap-6) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Блок 01: Внутри-школьный -->
+        <article class="border-2 border-[#111111] bg-[#FAF9F6] p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-[#111111] pb-4 mb-6">
+              <span class="text-xs font-bold uppercase tracking-widest text-[#0047AB]">
+                01
+              </span>
+            </div>
+            <h3 data-i18n="stages.stage1.title" class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-4">
+              Внутри-школьный
+            </h3>
+            <p data-i18n="stages.stage1.desc" class="text-base leading-relaxed text-[#222222]">
+              Внутри-школьный этап проходит с 20 ноября по 10 декабря. Но он является не обязательным. Команды могут участвовать без него. Важно условие все ученики должны быть с одной школы и быть с 1 представителем школы
+            </p>
+          </div>
+        </article>
+
+        <!-- Блок 02: Областной -->
+        <article class="border-2 border-[#111111] bg-[#FAF9F6] p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-[#111111] pb-4 mb-6">
+              <span class="text-xs font-bold uppercase tracking-widest text-[#0047AB]">
+                02
+              </span>
+            </div>
+            <h3 data-i18n="stages.stage2.title" class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-4">
+              Областной
+            </h3>
+            <p data-i18n="stages.stage2.desc" class="text-base leading-relaxed text-[#222222]">
+              Основной этап Дебатов StepNy. Вся информация будет попозже.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Секция 3: Главная идея и цели + кнопки этапов -->
+    <section class="reveal-section py-12 sm:py-16">
+      <h2 data-i18n="goals.heading" class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-8 max-w-3xl">
+        Главная идея — создать пространство, в котором школьники смогут:
+      </h2>
+
+      <ul id="goals-list" class="space-y-4 text-base sm:text-lg font-medium mb-12">
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Научиться грамотно выражать свои мысли.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Развить критическое и аналитическое мышление.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Научиться строить убедительные аргументы.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Работать в команде.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Выступать перед аудиторией.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Находить и анализировать информацию.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-[#0047AB] font-extrabold select-none">■</span>
+          <span>Рассматривать проблемы с разных точек зрения.</span>
+        </li>
+      </ul>
+
+      <!-- Две вертикальные кнопки подробностей этапов -->
+      <div class="flex flex-col gap-4">
+        <button
+          type="button"
+          data-modal-trigger="stage1Details"
+          class="group w-full border-2 border-[#111111] bg-[#FAF9F6] px-6 py-5 flex items-center justify-between text-left hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-[0.99] transition-all duration-150 cursor-pointer"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#0047AB] group-hover:text-[#FAF9F6] transition-colors">01</span>
+            <span data-i18n="stageButtons.stage1" class="text-base sm:text-lg font-bold tracking-tight">
+              Узнать подробнее про первый этап
+            </span>
+          </div>
+          <span class="text-lg font-bold transform group-hover:translate-x-1 transition-transform">→</span>
+        </button>
+
+        <button
+          type="button"
+          data-modal-trigger="stage2Details"
+          class="group w-full border-2 border-[#111111] bg-[#FAF9F6] px-6 py-5 flex items-center justify-between text-left hover:bg-[#111111] hover:text-[#FAF9F6] active:scale-[0.99] transition-all duration-150 cursor-pointer"
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#0047AB] group-hover:text-[#FAF9F6] transition-colors">02</span>
+            <span data-i18n="stageButtons.stage2" class="text-base sm:text-lg font-bold tracking-tight">
+              Узнать подробнее про второй этап
+            </span>
+          </div>
+          <span class="text-lg font-bold transform group-hover:translate-x-1 transition-transform">→</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Чистый футер с мягким затемнением фона (#EFECE4) без разделительных линий и рамок -->
+  <footer class="w-full bg-[#EFECE4] mt-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <!-- Две колонки: слева бренд + ссылки, справа контакты -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 items-start">
+        <!-- Левая колонка -->
+        <div>
+          <p class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#111111] mb-6">
+            © Step<span class="text-[#0047AB]">Ny</span> Debate
+          </p>
+          <ul class="space-y-3 text-base font-semibold">
+            <li>
+              <button type="button" data-modal-trigger="docs" data-i18n="footer.docs" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                Документация
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="partners" data-i18n="footer.partners" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                Партнеры
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="aboutFooter" data-i18n="footer.about" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                О нас
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="tournamentFooter" data-i18n="footer.tournamentDetails" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                Подробнее о турнире
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="terms" data-i18n="footer.terms" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                Условия
+              </button>
+            </li>
+            <li>
+              <button type="button" data-modal-trigger="privacy" data-i18n="footer.privacy" class="hover:text-[#0047AB] transition-colors text-left cursor-pointer">
+                Условия обработки и сбора данных
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Правая колонка: Контакты -->
+        <div class="space-y-2 text-base">
+          <p data-i18n="footer.contactsTitle" class="font-extrabold text-[#111111] mb-2">
+            Контакты:
+          </p>
+          <p class="font-medium">Expamle@gmali.com</p>
+          <p class="font-medium">Inst:</p>
+          <p class="font-medium">TT:</p>
+          <p class="font-medium">TG:</p>
+          <p class="font-medium">Telegram Channel: @StepNyDebate</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Модальное окно -->
+  <div
+    id="app-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-[#111111]/50"
+  >
+    <div class="w-full max-w-lg bg-[#FAF9F6] border-2 border-[#111111] p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-4 border-b-2 border-[#111111] pb-4 mb-6">
+        <div>
+          <span id="modal-badge" class="block text-xs font-bold uppercase tracking-widest text-[#0047AB] mb-1">
+            StepNy Debate
+          </span>
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-extrabold tracking-tight">
+            Заголовок
+          </h3>
+        </div>
+        <button
+          id="modal-close-btn"
+          type="button"
+          aria-label="Закрыть окно"
+          class="w-10 h-10 shrink-0 border-2 border-[#111111] flex items-center justify-center text-base font-bold hover:bg-[#111111] hover:text-[#FAF9F6] transition-colors cursor-pointer"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div id="modal-body" class="space-y-4 text-base leading-relaxed text-[#222222]">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      kz: {
+        intro: {
+          p1: '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> — оқушылар арасында сыни ойлауды, шешендік шеберлікті, дәлелдеу дағдыларын, аналитикалық қабілеттерді және көпшілік алдында сөз сөйлеу мәдениетін дамытуға бағытталған білім беру дебаттық жобасы.',
+          p2: 'Жоба <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong> білім беру бастамасы аясында өткізіледі және әртүрлі мектеп оқушыларын зияткерлік жарыс, пікір алмасу және өзекті мәселелерді талқылау үшін біріктіреді.'
+        },
+        hero: {
+          registerBtn: 'Тіркелу',
+          detailsBtn: 'Толығырақ'
+        },
+        stages: {
+          heading: 'Турнир 2 кезеңнен тұрады',
+          stage1: {
+            title: 'Мектепішілік',
+            desc: 'Мектепішілік кезең 20 қараша мен 10 желтоқсан аралығында өтеді. Бірақ ол міндетті емес. Командалар онсыз да қатыса алады. Маңызды шарт: барлық оқушылар бір мектептен болуы және мектептің 1 өкілімен бірге болуы тиіс'
+          },
+          stage2: {
+            title: 'Облыстық',
+            desc: 'StepNy Дебаттарының негізгі кезеңі. Барлық ақпарат кейінірек жарияланады.'
+          }
+        },
+        goals: {
+          heading: 'Басты идея — оқушыларға келесі мүмкіндіктерді беретін кеңістік құру:',
+          items: [
+            'Өз ойларын сауатты жеткізуді үйрену.',
+            'Сыни және аналитикалық ойлауды дамыту.',
+            'Сенімді дәлелдер құруды үйрену.',
+            'Командада жұмыс істеу.',
+            'Аудитория алдында сөз сөйлеу.',
+            'Ақпаратты табу және талдау.',
+            'Мәселелерді әртүрлі қырынан қарастыру.'
+          ]
+        },
+        stageButtons: {
+          stage1: 'Бірінші кезең туралы толығырақ білу',
+          stage2: 'Екінші кезең туралы толығырақ білу'
+        },
+        menu: {
+          navTitle: '1. Навигация',
+          navHome: 'Басты бет',
+          navAbout: 'Жоба туралы',
+          navTournament: 'Турнир',
+          navDocs: 'Құжаттар',
+          navFaq: 'Жиі қойылатын сұрақтар',
+          participantsTitle: '2. Қатысушыларға',
+          partReg: 'Менің тіркелуім',
+          partStatus: 'Өтінім мәртебесі',
+          partTeam: 'Команда туралы ақпарат',
+          partResults: 'Турнир нәтижелері',
+          generalTitle: '3. Жалпы мәліметтер',
+          genContact: 'Ұйымдастырушылармен байланыс',
+          genPartner: 'Серіктестік және демеушілік',
+          genIssue: 'Мәселе туралы хабарлау'
+        },
+        footer: {
+          docs: 'Құжаттама',
+          partners: 'Серіктестер',
+          about: 'Біз туралы',
+          tournamentDetails: 'Турнир туралы толығырақ',
+          contactsTitle: 'Байланыс:'
+        },
+        modals: {
+          register: {
+            badge: 'Тіркелу',
+            title: 'Команданы тіркеу',
+            body: '<p>StepNy Debate турниріне қатысу үшін команда құрамы (бір мектептен) және мектеп өкілі туралы деректерді толтырыңыз.</p><form id="reg-form" class="space-y-4 pt-2"><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Команда атауы</label><input required type="text" placeholder="Мысалы: StepNy Speakers" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Мектеп</label><input required type="text" placeholder="№ мектеп / лицей атауы" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Мектеп өкілінің байланысы (Telegram / телефон)</label><input required type="text" placeholder="@username немесе +7..." class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><button type="submit" class="w-full py-3.5 bg-[#111111] text-[#FAF9F6] text-xs font-bold uppercase tracking-widest hover:bg-[#0047AB] transition-colors cursor-pointer">Өтінім жіберу</button></form><p id="reg-success" class="hidden text-sm font-bold text-[#0047AB] pt-2">Өтінім қабылданды! Ұйымдастырушылар жақын арада хабарласады.</p>'
+          },
+          aboutDetails: {
+            badge: 'Жоба туралы',
+            title: 'StepNy Debate форматы мен миссиясы',
+            body: '<p>StepNy Debate мектеп оқушыларына академиялық пікірталас тәжірибесін, дәлелдеу логикасын және командалық жұмыс дағдыларын береді.</p><p>Қатысушылар өзекті әлеуметтік және білім беру тақырыптарын талқылап, тәжірибелі төрешілерден кері байланыс алады.</p>'
+          },
+          stage1Details: {
+            badge: '01 кезең',
+            title: 'Мектепішілік кезең туралы толығырақ',
+            body: '<p><strong>Өткізу мерзімі:</strong> 20 қараша – 10 желтоқсан.</p><p><strong>Міндеттілік:</strong> Бұл кезең міндетті емес. Командалар оған қатыспай-ақ келесі кезеңге тіркеле алады.</p><p><strong>Негізгі талап:</strong> Команданың барлық мүшелері бір мектепте оқуы тиіс және мектеп атынан 1 ресми өкіл болуы міндетті.</p>'
+          },
+          stage2Details: {
+            badge: '02 кезең',
+            title: 'Облыстық кезең туралы толығырақ',
+            body: '<p><strong>Мәртебесі:</strong> StepNy Дебаттарының негізгі шешуші кезеңі.</p><p>Өткізу күні, орны, қарарлар (резолюциялар) және төрешілік регламенті туралы толық ақпарат ресми Telegram-арнада (@StepNyDebate) кейінірек жарияланады.</p>'
+          },
+          docs: {
+            badge: 'Құжаттама',
+            title: 'Регламент және ережелер',
+            body: '<p>• Турнир ережесі мен өткізу регламенті.</p><p>• Командаларға және мектеп өкілдеріне қойылатын талаптар.</p><p>• Қатысушылардың жеке деректерін жинау және өңдеу шарттары.</p>'
+          },
+          faq: {
+            badge: 'FAQ',
+            title: 'Жиі қойылатын сұрақтар',
+            body: '<p><strong>Мектепішілік кезеңге қатысу міндетті ме?</strong><br/>Жоқ, ол міндетті емес. Командалар онсыз да қатыса алады.</p><p><strong>Командада әртүрлі мектеп оқушылары бола ала ма?</strong><br/>Жоқ, барлық оқушылар бір мектептен болуы және мектептің 1 өкілімен бірге тіркелуі шарт.</p>'
+          },
+          status: {
+            badge: 'Қатысушыларға',
+            title: 'Өтінім мәртебесі',
+            body: '<p>Тіркеу өтінімі жіберілгеннен кейін ұйымдастырушылар мектеп өкілінің деректерін тексереді және растау хабарламасын жібереді.</p>'
+          },
+          team: {
+            badge: 'Қатысушыларға',
+            title: 'Команда туралы ақпарат',
+            body: '<p>Бір команда құрамындағы барлық спикерлер бір білім беру ұйымынан болуы тиіс. Командамен бірге мектептің 1 өкілі тіркеледі.</p>'
+          },
+          results: {
+            badge: 'Қатысушыларға',
+            title: 'Турнир нәтижелері',
+            body: '<p>Іріктеу және негізгі ойындардың кестесі мен нәтижелері турнир кезеңдері аяқталғаннан кейін осында және @StepNyDebate арнасында жарияланады.</p>'
+          },
+          contact: {
+            badge: 'Байланыс',
+            title: 'Ұйымдастырушылармен байланыс',
+            body: '<p>Электрондық пошта: <strong>Expamle@gmali.com</strong></p><p>Telegram арнасы: <strong>@StepNyDebate</strong></p>'
+          },
+          partners: {
+            badge: 'Ынтымақтастық',
+            title: 'Серіктестер және демеушілер',
+            body: '<p>StepNy Debate білім беру мекемелерімен, жастар ұйымдарымен және демеушілермен серіктестікке ашық. Ұсыныстар үшін: <strong>Expamle@gmali.com</strong>.</p>'
+          },
+          issue: {
+            badge: 'Қолдау',
+            title: 'Мәселе туралы хабарлау',
+            body: '<p>Тіркеу немесе сайт жұмысы бойынша сұрақтар туындаса, <strong>Expamle@gmali.com</strong> поштасына немесе Telegram арнамызға (@StepNyDebate) жазыңыз.</p>'
+          },
+          aboutFooter: {
+            badge: 'StepNy Debate',
+            title: 'Біз туралы',
+            body: '<p>StepNy Debate — оқушылардың сыни ойлауы мен шешендік қабілетін дамытуға арналған білім беру бастамасы.</p>'
+          },
+          tournamentFooter: {
+            badge: 'Турнир',
+            title: 'Турнир туралы толығырақ',
+            body: '<p>Турнир екі кезеңнен тұрады: мектепішілік (20 қараша – 10 желтоқсан, міндетті емес) және негізгі облыстық кезең.</p>'
+          },
+          terms: {
+            badge: 'Құқықтық ақпарат',
+            title: 'Қатысу шарттары',
+            body: '<p>StepNy Debate турниріне қатысу үшін команданың барлық мүшелері бір мектептің оқушылары болуы және мектептің 1 ресми өкілімен бірге тіркелуі шарт.</p>'
+          },
+          privacy: {
+            badge: 'Құпиялылық',
+            title: 'Деректерді жинау және өңдеу шарттары',
+            body: '<p>Тіркеу кезінде берілген байланыс деректері тек турнирді ұйымдастыру, қатысушыларды тіркеу және командалармен байланысу мақсатында қолданылады.</p>'
+          }
+        }
+      },
+      ru: {
+        intro: {
+          p1: '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> — образовательный дебатный проект, направленный на развитие критического мышления, ораторского мастерства, аргументации, аналитических способностей и навыков публичного выступления среди школьников.',
+          p2: 'Проект проводится в рамках образовательной инициативы <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong> и объединяет учащихся разных школ для интеллектуального соревнования, обмена мнениями и обсуждения актуальных вопросов.'
+        },
+        hero: {
+          registerBtn: 'Зарегистрироваться',
+          detailsBtn: 'Подробнее'
+        },
+        stages: {
+          heading: 'Турнир состоит из 2 этапов',
+          stage1: {
+            title: 'Внутри-школьный',
+            desc: 'Внутри-школьный этап проходит с 20 ноября по 10 декабря. Но он является не обязательным. Команды могут участвовать без него. Важно условие все ученики должны быть с одной школы и быть с 1 представителем школы'
+          },
+          stage2: {
+            title: 'Областной',
+            desc: 'Основной этап Дебатов StepNy. Вся информация будет попозже.'
+          }
+        },
+        goals: {
+          heading: 'Главная идея — создать пространство, в котором школьники смогут:',
+          items: [
+            'Научиться грамотно выражать свои мысли.',
+            'Развить критическое и аналитическое мышление.',
+            'Научиться строить убедительные аргументы.',
+            'Работать в команде.',
+            'Выступать перед аудиторией.',
+            'Находить и анализировать информацию.',
+            'Рассматривать проблемы с разных точек зрения.'
+          ]
+        },
+        stageButtons: {
+          stage1: 'Узнать подробнее про первый этап',
+          stage2: 'Узнать подробнее про второй этап'
+        },
+        menu: {
+          navTitle: '1. Навигация',
+          navHome: 'Главная',
+          navAbout: 'О проекте',
+          navTournament: 'Турнир',
+          navDocs: 'Документы',
+          navFaq: 'Часто задаваемые вопросы',
+          participantsTitle: '2. Участникам',
+          partReg: 'Моя регистрация',
+          partStatus: 'Статус заявки',
+          partTeam: 'Информация о команде',
+          partResults: 'Результаты турнира',
+          generalTitle: '3. Общие сведения',
+          genContact: 'Связь с организаторами',
+          genPartner: 'Партнерство и спонсорство',
+          genIssue: 'Сообщить о проблеме'
+        },
+        footer: {
+          docs: 'Документация',
+          partners: 'Партнеры',
+          about: 'О нас',
+          tournamentDetails: 'Подробнее о турнире',
+          contactsTitle: 'Контакты:'
+        },
+        modals: {
+          register: {
+            badge: 'Регистрация',
+            title: 'Регистрация команды',
+            body: '<p>Для участия в турнире StepNy Debate укажите данные команды (все участники должны быть из одной школы) и 1 представителя школы.</p><form id="reg-form" class="space-y-4 pt-2"><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Название команды</label><input required type="text" placeholder="Например: StepNy Speakers" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Школа</label><input required type="text" placeholder="Номер или название школы" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Контакт представителя школы (Telegram / телефон)</label><input required type="text" placeholder="@username или +7..." class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><button type="submit" class="w-full py-3.5 bg-[#111111] text-[#FAF9F6] text-xs font-bold uppercase tracking-widest hover:bg-[#0047AB] transition-colors cursor-pointer">Отправить заявку</button></form><p id="reg-success" class="hidden text-sm font-bold text-[#0047AB] pt-2">Заявка отправлена! Организаторы свяжутся с представителем школы.</p>'
+          },
+          aboutDetails: {
+            badge: 'О проекте',
+            title: 'Формат и миссия StepNy Debate',
+            body: '<p>StepNy Debate — образовательная площадка для школьников, где участники развивают критическое мышление, логику построения аргументов и культуру публичной дискуссии.</p><p>Турнир объединяет команды разных школ для интеллектуальных раундов и обмена опытом.</p>'
+          },
+          stage1Details: {
+            badge: 'Этап 01',
+            title: 'Подробнее о первом этапе',
+            body: '<p><strong>Сроки проведения:</strong> с 20 ноября по 10 декабря.</p><p><strong>Статус участия:</strong> Внутри-школьный этап является необязательным — команды могут участвовать в турнире и без него.</p><p><strong>Обязательное условие:</strong> Все ученики в команде должны учиться в одной школе и сопровождаться 1 представителем школы.</p>'
+          },
+          stage2Details: {
+            badge: 'Этап 02',
+            title: 'Подробнее о втором этапе',
+            body: '<p><strong>Статус:</strong> Областной этап — основной этап Дебатов StepNy.</p><p>Подробное расписание, место проведения, регламент и темы раундов будут опубликованы позже в Telegram-канале <strong>@StepNyDebate</strong>.</p>'
+          },
+          docs: {
+            badge: 'Документация',
+            title: 'Регламент и условия участия',
+            body: '<p>• Положение о проведении дебатного турнира StepNy Debate.</p><p>• Условия формирования команд от одной школы и сопровождения представителем.</p><p>• Условия обработки и сбора персональных данных участников.</p>'
+          },
+          faq: {
+            badge: 'FAQ',
+            title: 'Часто задаваемые вопросы',
+            body: '<p><strong>Обязательно ли проходить внутри-школьный этап?</strong><br/>Нет, он не является обязательным. Команды могут участвовать без него.</p><p><strong>Могут ли в одной команде играть ученики из разных школ?</strong><br/>Нет, важное условие: все ученики должны быть с одной школы и с 1 представителем школы.</p>'
+          },
+          status: {
+            badge: 'Участникам',
+            title: 'Статус заявки',
+            body: '<p>После отправки формы регистрации заявка проходит проверку на соответствие условиям (одна школа + 1 представитель). Подтверждение направляется представителю школы.</p>'
+          },
+          team: {
+            badge: 'Участникам',
+            title: 'Информация о команде',
+            body: '<p>Команда формируется из учащихся одной образовательной организации с обязательным закреплением 1 представителя от школы.</p>'
+          },
+          results: {
+            badge: 'Участникам',
+            title: 'Результаты турнира',
+            body: '<p>Турнирная таблица, спикерские баллы и итоги раундов публикуются после завершения этапов и дублируются в канале <strong>@StepNyDebate</strong>.</p>'
+          },
+          contact: {
+            badge: 'Контакты',
+            title: 'Связь с организаторами',
+            body: '<p>Почта: <strong>Expamle@gmali.com</strong></p><p>Telegram Channel: <strong>@StepNyDebate</strong></p>'
+          },
+          partners: {
+            badge: 'Сотрудничество',
+            title: 'Партнерство и спонсорство',
+            body: '<p>Мы открыты к сотрудничеству со школами, образовательными центрами и спонсорами. Свяжитесь с нами по почте: <strong>Expamle@gmali.com</strong>.</p>'
+          },
+          issue: {
+            badge: 'Поддержка',
+            title: 'Сообщить о проблеме',
+            body: '<p>Если вы столкнулись с технической ошибкой или вопросом по регистрации, напишите на <strong>Expamle@gmali.com</strong> или в Telegram-канал <strong>@StepNyDebate</strong>.</p>'
+          },
+          aboutFooter: {
+            badge: 'StepNy Debate',
+            title: 'О нас',
+            body: '<p>StepNy Debate — образовательный дебатный проект в рамках инициативы StepNy, созданный для развития интеллектуального потенциала школьников.</p>'
+          },
+          tournamentFooter: {
+            badge: 'Турнир',
+            title: 'Подробнее о турнире',
+            body: '<p>Турнир состоит из 2 этапов: внутри-школьного (с 20 ноября по 10 декабря, необязательный) и основного областного этапа.</p>'
+          },
+          terms: {
+            badge: 'Правила',
+            title: 'Условия участия',
+            body: '<p>Участие в турнире StepNy Debate открыто для школьных команд при соблюдении регламента: все участники команды должны быть из одной школы и сопровождаться 1 представителем школы.</p>'
+          },
+          privacy: {
+            badge: 'Конфиденциальность',
+            title: 'Условия обработки и сбора данных',
+            body: '<p>Персональные и контактные данные, указанные при регистрации, собираются и обрабатываются исключительно для организации турнира StepNy Debate и связи с представителями команд.</p>'
+          }
+        }
+      },
+      en: {
+        intro: {
+          p1: '<strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span> Debate</strong> is an educational debate project aimed at developing critical thinking, public speaking, argumentation, analytical abilities, and presentation skills among school students.',
+          p2: 'The project is held as part of the <strong class="font-extrabold">Step<span class="text-[#0047AB]">Ny</span></strong> educational initiative and brings together students from different schools for intellectual competition, exchange of ideas, and discussion of pressing issues.'
+        },
+        hero: {
+          registerBtn: 'Register',
+          detailsBtn: 'Learn More'
+        },
+        stages: {
+          heading: 'The tournament consists of 2 stages',
+          stage1: {
+            title: 'Intra-school',
+            desc: 'The intra-school stage takes place from November 20 to December 10. However, it is not mandatory. Teams can participate without it. An important condition is that all students must be from the same school and accompanied by 1 school representative'
+          },
+          stage2: {
+            title: 'Regional',
+            desc: 'The main stage of StepNy Debates. All details will be announced later.'
+          }
+        },
+        goals: {
+          heading: 'The main idea is to create a space where students can:',
+          items: [
+            'Learn to express their thoughts clearly and effectively.',
+            'Develop critical and analytical thinking.',
+            'Learn to build persuasive arguments.',
+            'Work effectively in a team.',
+            'Speak confidently in front of an audience.',
+            'Find and analyze information.',
+            'Examine issues from multiple perspectives.'
+          ]
+        },
+        stageButtons: {
+          stage1: 'Learn more about the first stage',
+          stage2: 'Learn more about the second stage'
+        },
+        menu: {
+          navTitle: '1. Navigation',
+          navHome: 'Home',
+          navAbout: 'About Project',
+          navTournament: 'Tournament',
+          navDocs: 'Documents',
+          navFaq: 'Frequently Asked Questions',
+          participantsTitle: '2. For Participants',
+          partReg: 'My Registration',
+          partStatus: 'Application Status',
+          partTeam: 'Team Information',
+          partResults: 'Tournament Results',
+          generalTitle: '3. General Information',
+          genContact: 'Contact Organizers',
+          genPartner: 'Partnership & Sponsorship',
+          genIssue: 'Report an Issue'
+        },
+        footer: {
+          docs: 'Documentation',
+          partners: 'Partners',
+          about: 'About Us',
+          tournamentDetails: 'More About the Tournament',
+          contactsTitle: 'Contacts:'
+        },
+        modals: {
+          register: {
+            badge: 'Registration',
+            title: 'Team Registration',
+            body: '<p>To participate in the StepNy Debate tournament, provide your team details (all students must be from the same school) along with 1 school representative.</p><form id="reg-form" class="space-y-4 pt-2"><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">Team Name</label><input required type="text" placeholder="e.g., StepNy Speakers" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">School</label><input required type="text" placeholder="School name or number" class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><div><label class="block text-xs font-bold uppercase tracking-wider mb-1">School Representative Contact (Telegram / Phone)</label><input required type="text" placeholder="@username or +7..." class="w-full border-2 border-[#111111] bg-[#FAF9F6] px-3 py-2.5 text-sm focus:outline-none focus:border-[#0047AB]" /></div><button type="submit" class="w-full py-3.5 bg-[#111111] text-[#FAF9F6] text-xs font-bold uppercase tracking-widest hover:bg-[#0047AB] transition-colors cursor-pointer">Submit Application</button></form><p id="reg-success" class="hidden text-sm font-bold text-[#0047AB] pt-2">Application submitted! Organizers will contact your school representative shortly.</p>'
+          },
+          aboutDetails: {
+            badge: 'About Project',
+            title: 'StepNy Debate Format & Mission',
+            body: '<p>StepNy Debate is an educational platform for school students focused on critical thinking, structured argumentation, and public speaking.</p><p>The tournament connects teams across schools for intellectual rounds and constructive dialogue.</p>'
+          },
+          stage1Details: {
+            badge: 'Stage 01',
+            title: 'More About the First Stage',
+            body: '<p><strong>Dates:</strong> November 20 to December 10.</p><p><strong>Participation:</strong> The intra-school stage is optional — teams may join the tournament without participating in it.</p><p><strong>Key Requirement:</strong> All students in a team must attend the same school and have 1 school representative.</p>'
+          },
+          stage2Details: {
+            badge: 'Stage 02',
+            title: 'More About the Second Stage',
+            body: '<p><strong>Status:</strong> The Regional Stage is the main stage of StepNy Debates.</p><p>Exact dates, venue, motions, and rules will be announced later in our Telegram channel <strong>@StepNyDebate</strong>.</p>'
+          },
+          docs: {
+            badge: 'Documentation',
+            title: 'Rules & Regulations',
+            body: '<p>• Official StepNy Debate tournament regulations.</p><p>• Team composition requirements (single school + 1 school representative).</p><p>• Terms of personal data collection and processing.</p>'
+          },
+          faq: {
+            badge: 'FAQ',
+            title: 'Frequently Asked Questions',
+            body: '<p><strong>Is the intra-school stage mandatory?</strong><br/>No, it is optional. Teams can participate without it.</p><p><strong>Can students from different schools form a single team?</strong><br/>No, all students must be from the same school and accompanied by 1 school representative.</p>'
+          },
+          status: {
+            badge: 'For Participants',
+            title: 'Application Status',
+            body: '<p>Once submitted, your application is reviewed to verify school affiliation and representative details. Confirmation is sent to your school representative.</p>'
+          },
+          team: {
+            badge: 'For Participants',
+            title: 'Team Information',
+            body: '<p>Each team must consist exclusively of students from a single school and include 1 official school representative.</p>'
+          },
+          results: {
+            badge: 'For Participants',
+            title: 'Tournament Results',
+            body: '<p>Standings, speaker scores, and round results will be published after each stage and shared on <strong>@StepNyDebate</strong>.</p>'
+          },
+          contact: {
+            badge: 'Contacts',
+            title: 'Contact Organizers',
+            body: '<p>Email: <strong>Expamle@gmali.com</strong></p><p>Telegram Channel: <strong>@StepNyDebate</strong></p>'
+          },
+          partners: {
+            badge: 'Cooperation',
+            title: 'Partnership & Sponsorship',
+            body: '<p>We welcome partnerships with schools, educational centers, and sponsors. Reach out at <strong>Expamle@gmali.com</strong>.</p>'
+          },
+          issue: {
+            badge: 'Support',
+            title: 'Report an Issue',
+            body: '<p>If you encounter any issues with registration or the website, please contact <strong>Expamle@gmali.com</strong> or <strong>@StepNyDebate</strong>.</p>'
+          },
+          aboutFooter: {
+            badge: 'StepNy Debate',
+            title: 'About Us',
+            body: '<p>StepNy Debate is an educational debate initiative under StepNy created to empower school students through structured debate.</p>'
+          },
+          tournamentFooter: {
+            badge: 'Tournament',
+            title: 'More About the Tournament',
+            body: '<p>The tournament consists of 2 stages: Intra-school (Nov 20 – Dec 10, optional) and the main Regional stage.</p>'
+          },
+          terms: {
+            badge: 'Rules',
+            title: 'Terms of Participation',
+            body: '<p>Participation in StepNy Debate is open to school teams provided all members attend the same school and are accompanied by 1 official school representative.</p>'
+          },
+          privacy: {
+            badge: 'Privacy',
+            title: 'Data Collection & Processing Policy',
+            body: '<p>Contact and team details submitted during registration are collected and processed strictly for organizing the StepNy Debate tournament and communicating with team representatives.</p>'
+          }
+        }
+      }
+    };
+
+    let currentLang = 'ru';
+
+    function setLanguage(lang) {
+      if (!translations[lang]) return;
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      const t = translations[lang];
+
+      document.querySelectorAll('.lang-btn').forEach((btn) => {
+        const isActive = btn.getAttribute('data-lang-btn') === lang;
+        if (isActive) {
+          btn.classList.add('bg-[#111111]', 'text-[#FAF9F6]');
+          btn.classList.remove('bg-[#FAF9F6]', 'text-[#111111]');
+        } else {
+          btn.classList.remove('bg-[#111111]', 'text-[#FAF9F6]');
+          btn.classList.add('bg-[#FAF9F6]', 'text-[#111111]');
+        }
+      });
+
+      const p1El = document.getElementById('intro-p1');
+      const p2El = document.getElementById('intro-p2');
+      if (p1El) p1El.innerHTML = t.intro.p1;
+      if (p2El) p2El.innerHTML = t.intro.p2;
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const keyPath = el.getAttribute('data-i18n').split('.');
+        let value = t;
+        for (const k of keyPath) {
+          value = value ? value[k] : null;
+        }
+        if (typeof value === 'string') {
+          el.textContent = value;
+        }
+      });
+
+      const goalsList = document.getElementById('goals-list');
+      if (goalsList && Array.isArray(t.goals.items)) {
+        goalsList.innerHTML = t.goals.items
+          .map(
+            (item) => `
+            <li class="flex items-start gap-3">
+              <span class="text-[#0047AB] font-extrabold select-none">■</span>
+              <span>${item}</span>
+            </li>`
+          )
+          .join('');
+      }
+    }
+
+    
+    const menuOpenBtn = document.getElementById('menu-open-btn');
+    const menuCloseBtn = document.getElementById('menu-close-btn');
+    const slideMenu = document.getElementById('slide-menu');
+    const menuBackdrop = document.getElementById('menu-backdrop');
+
+    function openMenu() {
+      slideMenu.classList.remove('translate-x-full');
+      slideMenu.setAttribute('aria-hidden', 'false');
+      menuBackdrop.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      slideMenu.classList.add('translate-x-full');
+      slideMenu.setAttribute('aria-hidden', 'true');
+      menuBackdrop.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    menuOpenBtn.addEventListener('click', openMenu);
+    menuCloseBtn.addEventListener('click', closeMenu);
+    menuBackdrop.addEventListener('click', closeMenu);
+
+    document.querySelectorAll('[data-menu-link]').forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+
+    document.querySelectorAll('[data-accordion-toggle]').forEach((toggleBtn) => {
+      toggleBtn.addEventListener('click', () => {
+        const targetId = toggleBtn.getAttribute('data-accordion-toggle');
+        const content = document.getElementById(targetId);
+        const arrow = toggleBtn.querySelector('.accordion-arrow');
+        const isOpen = content.classList.toggle('open');
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        if (arrow) {
+          arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+      });
+    });
+
+
+    const modal = document.getElementById('app-modal');
+    const modalBadge = document.getElementById('modal-badge');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    function openModal(key) {
+      const modalData = translations[currentLang]?.modals?.[key];
+      if (!modalData) return;
+
+      closeMenu();
+      modalBadge.textContent = modalData.badge;
+      modalTitle.textContent = modalData.title;
+      modalBody.innerHTML = modalData.body;
+
+      const regForm = document.getElementById('reg-form');
+      if (regForm) {
+        regForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const successMsg = document.getElementById('reg-success');
+          if (successMsg) successMsg.classList.remove('hidden');
+          regForm.reset();
+        });
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-modal-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-modal-trigger');
+        openModal(key);
+      });
+    });
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeMenu();
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang-btn');
+        setLanguage(lang);
+      });
+    });
+
+   
+    const revealSections = document.querySelectorAll('.reveal-section');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+      );
+      revealSections.forEach((section) => revealObserver.observe(section));
+    } else {
+      revealSections.forEach((section) => section.classList.add('is-visible'));
+    }
+
+
+    setLanguage('ru');
+  </script>
+</body>
+</html>
